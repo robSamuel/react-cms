@@ -14,26 +14,28 @@ const loading = (
   </div>
 )
 
+const mappedRoutes = routes.map((route, idx) => {
+  return route.component && (
+    <Route
+      key={idx}
+      path={route.path}
+      exact={route.exact}
+      name={route.name}
+      component={props => (
+        <CFade>
+          <route.component {...props} />
+        </CFade>
+      )} />
+  )
+});
+
 const TheContent = () => {
   return (
     <main className="c-main">
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
-            {routes.map((route, idx) => {
-              return route.component && (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact={route.exact}
-                  name={route.name}
-                  render={props => (
-                    <CFade>
-                      <route.component {...props} />
-                    </CFade>
-                  )} />
-              )
-            })}
+            { mappedRoutes }
           </Switch>
         </Suspense>
       </CContainer>
